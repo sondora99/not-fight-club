@@ -3,6 +3,15 @@
   src: url('fonts/Conduit ITC Bold.otf');
 }
 
+$orange: #FFA500;
+$brown: #231904;
+$brown-alpha: rgba(35, 25, 4, 0.7);
+$text: #EAB43C;
+$light: #EFC66A;
+
+$font-basic: Jost, sans-serif;
+$font-title: Conduit;
+
 body{
   margin: 0;
   padding: 0;
@@ -13,6 +22,7 @@ body{
   width: 100%;
   height: 100vh;
   font-size: 16px;
+  font-family: $font-basic;
 }
 
 ul{
@@ -22,11 +32,19 @@ ul{
 ul, li{
   padding: 0;
   margin: 0;
-  font-size: 1.5em;
+  font-size: 1.3em;
+  color: $orange;
+  text-transform: uppercase;
 }
 
 a{
   text-decoration: none;
+  color: $text;
+
+  &:hover{
+    color: $orange;
+    transition: 0.3s ease-in-out;
+  }
 }
 
 .container{
@@ -35,6 +53,9 @@ a{
   height: 100%;
 }
 
+.header{
+  background-color: $brown-alpha;
+}
 
 .header-menu{
   display: flex;
@@ -44,9 +65,14 @@ a{
 }
 
 h1{
-  font-family: Conduit;
+  font-family: $font-title;
   text-align: center;
-  font-size: 3em;
+  font-size: 3.5em;
+  text-transform: uppercase;
+  color: $brown;
+  text-shadow: 
+        -1px -1px 5px $light,
+        1px -1px 5px $light,;
 }
 
 .welcome{
@@ -62,7 +88,47 @@ h1{
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
+  position: relative;
+}
+
+.welcome-form::after,
+.welcome-form::before,
+.welcome-form > :first-child::after,
+.welcome-form > :first-child::before{
+  position: absolute;
+  content: "";
+  width: 15px;
+  height: 15px;
+  border: 4px solid $orange;
+  border-radius: 2px;
+}
+
+.welcome-form::after{
+  top: -2px;
+  left: -2px;
+  border-bottom: none;
+  border-right: none;
+}
+
+.welcome-form::before{
+  bottom: -2px;
+  right: -2px;
+  border-top: none;
+  border-left: none;
+}
+
+.welcome-form > :first-child::after{
+  top: -2px;
+  right: -2px;
+  border-bottom: none;
+  border-left: none;
+}
+
+.welcome-form > :first-child::before{
+  bottom: -2px;
+  left: -2px;
+  border-top: none;
+  border-right: none;
 }
 
 fieldset{
@@ -77,6 +143,46 @@ fieldset{
 .welcome-form-name{
   text-align: center;
   font-size: 1.3em;
-  color: white;
+  color: $text;
   margin-bottom: 20px;
+}
+
+.welcome-form-button{
+  background-color: $brown;
+  background-image: linear-gradient(to right, $text -45%, $brown 45%),
+              linear-gradient(to left, $text -45%, $brown 45%);
+  background-size: 20% 100%, 20% 100%; // Размер градиентов: 20% ширины кнопки с каждой стороны
+  background-position: left, right; // Позиция: левый градиент
+  background-repeat: no-repeat;
+  border: 1px solid $light;
+  border-radius: 2px;
+  color: $light;
+  text-transform: uppercase;
+  padding: 3px 20px;
+  font-family: $font-basic;
+  font-size: 1.1em;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.welcome-form-button:hover{
+  background-image: linear-gradient(to right, $text -15%, $brown 45%),
+              linear-gradient(to left, $text -15%, $brown 45%);
+  background-size: 30% 100%, 30% 100%;
+  transition: 0.3s ease-in-out;
+  color: $orange;
+}
+
+.welcome-form-field{
+  all: unset;
+  background-color: #FBF2DD;
+  width: 200px;
+  height: 20px;
+  border-radius: 1px;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.hide{
+  display: none;
 }
