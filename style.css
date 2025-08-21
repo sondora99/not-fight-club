@@ -134,7 +134,7 @@ fieldset {
   margin-bottom: 20px;
 }
 
-.welcome-form-button {
+.button {
   background-color: #231904;
   background-image: linear-gradient(to right, #EAB43C -45%, #231904 45%), linear-gradient(to left, #EAB43C -45%, #231904 45%);
   background-size: 20% 100%, 20% 100%;
@@ -166,6 +166,12 @@ fieldset {
   border-radius: 1px;
   margin-bottom: 10px;
   padding: 5px;
+}
+
+.home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hide {

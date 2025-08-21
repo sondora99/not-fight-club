@@ -14,6 +14,7 @@ export let hero = {
       arms: '',
       belly: '',
       legs: ''
-  }
+  },
+  picture: ''
 };
 

@@ -147,7 +147,7 @@ fieldset{
   margin-bottom: 20px;
 }
 
-.welcome-form-button{
+.button{
   background-color: $brown;
   background-image: linear-gradient(to right, $text -45%, $brown 45%),
               linear-gradient(to left, $text -45%, $brown 45%);
@@ -164,6 +164,7 @@ fieldset{
   font-weight: 500;
   cursor: pointer;
 }
+
 
 .welcome-form-button:hover{
   background-image: linear-gradient(to right, $text -15%, $brown 45%),
@@ -183,6 +184,13 @@ fieldset{
   padding: 5px;
 }
 
+.home{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .hide{
   display: none;
 }
+
