@@ -1,5 +1,5 @@
 export let hero = {
-  name: 'w',
+  name: '',
   health: 100,
   hits: {
       head: '',
@@ -15,6 +15,8 @@ export let hero = {
       belly: '',
       legs: ''
   },
-  picture: ''
+  picture: './assets/heroes/hero1.png'
 };
+
+let heroBody = ['head', 'chest', 'arms', 'belly', 'legs'];
 

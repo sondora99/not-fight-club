@@ -8,6 +8,7 @@ $brown: #231904;
 $brown-alpha: rgba(35, 25, 4, 0.7);
 $text: #EAB43C;
 $light: #EFC66A;
+$bg-dark: rgba(0, 0, 0, 0.5);
 
 $font-basic: Jost, sans-serif;
 $font-title: Conduit;
@@ -188,6 +189,42 @@ fieldset{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.battle{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  background-color: $bg-dark;
+  padding: 20px;
+}
+
+.hero-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.health-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 10px;
+}
+
+p{
+  padding: 0;
+  margin: 0;
+}
+
+.image{
+  max-height: 350px;
+  height: 100%;
 }
 
 .hide{
