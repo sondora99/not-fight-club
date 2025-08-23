@@ -190,6 +190,13 @@ fieldset {
   justify-content: center;
   padding: 20px;
 }
+.hero-container p {
+  padding: 0;
+  margin: 0;
+  font-size: 1.3em;
+  color: #FFA500;
+  text-transform: uppercase;
+}
 
 .health-container {
   display: flex;
@@ -208,6 +215,53 @@ p {
 .image {
   max-height: 350px;
   height: 100%;
+}
+
+.fight-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 30px;
+}
+
+.fight-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.fight-field p {
+  color: #EFC66A;
+  font-size: 1.2em;
+}
+
+.attack-area, .defence-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  gap: 20px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.checkbox-container label {
+  font-size: 1.2em;
+  color: #EFC66A;
+}
+.checkbox-container p {
+  font-size: 1em;
+  color: #EFC66A;
+  text-transform: uppercase;
+}
+
+.checkbox-container-defence {
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .hide {
