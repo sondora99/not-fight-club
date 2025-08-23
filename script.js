@@ -8,8 +8,10 @@ const home = document.querySelector('.home');
 const buttonHome = document.querySelector('.home-button');
 const battle = document.querySelector('.battle');
 
-let attacks = [];
-let defences = [];
+let attacksHero = [];
+let defencesHero = [];
+let attacksEnemy= [];
+let defencesEnemy = [];
 //-- welcome form --//
 
 function checkStorageName() {
@@ -80,13 +82,13 @@ const healthContainer = document.createElement('div');
 healthContainer.classList.add('health-container');
 heroContainer.appendChild(healthContainer);
 
-const healthBar = document.createElement('progress');
-healthBar.max = '100';
-healthBar.value = '100';
-healthContainer.appendChild(healthBar);
+const healthBarHero = document.createElement('progress');
+healthBarHero.max = 100;
+healthBarHero.value = 100;
+healthContainer.appendChild(healthBarHero);
 
 const healthValue = document.createElement('p');
-healthValue.innerHTML = `${healthBar.value} / ${healthBar.max}`;
+healthValue.innerHTML = `${healthBarHero.value} / ${healthBarHero.max}`;
 healthContainer.appendChild(healthValue);
 
 checkStorageName(); //on windows load?
@@ -133,13 +135,13 @@ heroBody.map(el => {
 
   shot.addEventListener('change', () => {
     if (shot.checked){
-      attacks.push(shot.value)
+      attacksHero.push(shot.value)
     } else (
-      attacks = attacks.filter(el => el !== shot.value)
+      attacksHero = attacksHero.filter(el => el !== shot.value)
     )
-    console.log(attacks);
+    console.log('hero атакует', attacksHero);
 
-    if (attacks.length > 1){
+    if (attacksHero.length > 1){
       fightbutton.disabled = true;
     }
   })
@@ -162,16 +164,18 @@ enemyBody.map(el => {
 
   shot.addEventListener('change', () => {
     if (shot.checked){
-      defences.push(shot.value)
+      defencesHero.push(shot.value)
     } else (
-      defences = defences.filter(el => el !== shot.value)
+      defencesHero = defencesHero.filter(el => el !== shot.value)
     )
-    console.log(defences);
-
-    if (defences.length > 2){
+    if (defencesHero.length > 2){
       fightbutton.disabled = true;
+    } else {
+      fightbutton.disabled = false;
     }
+    console.log('hero защищает', defencesHero);
   })
+  
  })
 
 const fightbutton = document.createElement('button');
@@ -197,8 +201,8 @@ healthContainerEnemy.classList.add('health-container');
 enemyContainer.appendChild(healthContainerEnemy);
 
 const healthBarEnemy = document.createElement('progress');
-healthBarEnemy.max = '100';
-healthBarEnemy.value = '100';
+healthBarEnemy.max = 100;
+healthBarEnemy.value = 100;
 healthContainerEnemy.appendChild(healthBarEnemy);
 
 const healthValueEnemy = document.createElement('p');
@@ -206,3 +210,92 @@ healthValueEnemy.innerHTML = `${healthBarEnemy.value} / ${healthBarEnemy.max}`;
 healthContainerEnemy.appendChild(healthValueEnemy);
 
 //--fight-logic--//
+
+function randomAttack() {
+  let ind = Math.floor(Math.random() * 5);
+  if (defencesEnemy.includes(heroBody[ind])){
+    return randomAttack()
+  }
+  return ind
+}
+
+function enemyAttack() {
+  attacksEnemy = [];
+  let temp = randomAttack();
+  attacksEnemy.push(heroBody[temp]);
+  console.log('enemy атаковал', attacksEnemy)
+}
+
+function enemyDefence() {
+  defencesEnemy = [];
+  while (defencesEnemy.length < 2) {
+    let temp = randomAttack();
+    defencesEnemy.push(heroBody[temp]);
+  }
+  console.log('enemy защищает', defencesEnemy)
+}
+
+function compareHeroAttack() {
+  let defHero = null;
+  let currentHealthEnemy =  healthBarEnemy.value;
+  for (let i = 0; i < defencesEnemy.length; i++) {
+    for (let j = 0; j < attacksHero.length; j++) {
+      if (defencesEnemy[i] == attacksHero[j]) {
+        defHero = defencesEnemy[i]
+      }    
+    }
+  }
+  if (defHero == null) {
+    currentHealthEnemy -= 10;
+    healthBarEnemy.value -= 10;
+    healthValueEnemy.innerHTML = `${currentHealthEnemy} / ${healthBarEnemy.max}`;
+    console.log('hero нанес урон 10HP')
+  }
+  else {
+     console.log('enemy защитил', defHero);
+  }
+  console.log('здоровье врага', currentHealthEnemy)
+  return currentHealthEnemy
+}
+
+
+function compareEnemyAttack() {
+  let defEnemy = null;
+  let currentHealthHero = healthBarHero.value
+  for (let i = 0; i < defencesHero.length; i++){
+    for (let j = 0; j < attacksEnemy.length; j++){
+      if (defencesHero[i] == attacksEnemy[j]) {
+        defEnemy = defencesHero[i];
+      }
+   }
+  }
+  if (defEnemy == null) {
+    console.log('enemy нанес урон');
+    currentHealthHero -= 10;
+    healthBarHero.value -= 10;
+    healthValue.innerHTML = `${currentHealthHero} / ${healthBarHero.max}`;
+  } else {
+    console.log('hero защитил', defEnemy)
+  }
+  console.log('здоровье героя', currentHealthHero)
+  return currentHealthHero
+};
+
+function checkHealth(currentHealthEnemy, currentHealthHero) {
+  if (currentHealthEnemy <= 0 ) {
+    console.log ('Hero wins!');
+    enemyImg.classList.add('image-loose');
+  }
+  else if (currentHealthHero <= 0) {
+    console.log ('Enemy wins!')
+  }
+}
+
+
+fightbutton.addEventListener('click', () => {
+  enemyAttack();
+  enemyDefence();
+  let healthEnemy = compareHeroAttack();
+  let healthHero = compareEnemyAttack();
+  checkHealth(healthEnemy, healthHero);
+})
