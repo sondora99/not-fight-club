@@ -7,6 +7,7 @@ const buttonInput = document.querySelector('.welcome-form-button');
 const home = document.querySelector('.home');
 const buttonHome = document.querySelector('.home-button');
 const battle = document.querySelector('.battle');
+const gameName = document.querySelector('.game-name');
 
 let attacksHero = [];
 let defencesHero = [];
@@ -17,7 +18,6 @@ let defencesEnemy = [];
 function checkStorageName() {
   if (localStorage.getItem('hero.name')) {
     //closeForm(welcomeForm);
-    console.log('see name in storage');
     show(home)
   }
   else {
@@ -60,10 +60,12 @@ function show(section){
 
 buttonHome.addEventListener('click', () => {
   closeForm(home);
+  gameName.classList.add('hide');
   show(battle);
 })
 
 //--battle--//
+window.onload = checkStorageName(); 
 
 const heroContainer = document.createElement('div');
 heroContainer.classList.add('hero-container');
@@ -71,6 +73,8 @@ battle.appendChild(heroContainer);
 
 let heroName = document.createElement('p');
 heroName.textContent = localStorage.getItem('hero.name');
+let heroNameContent = heroName.textContent;
+console.log(heroNameContent);
 heroContainer.appendChild(heroName);
 
 const heroImg = document.createElement('img');
@@ -90,8 +94,6 @@ healthContainer.appendChild(healthBarHero);
 const healthValue = document.createElement('p');
 healthValue.innerHTML = `${healthBarHero.value} / ${healthBarHero.max}`;
 healthContainer.appendChild(healthValue);
-
-checkStorageName(); //on windows load?
 
 //--fight-field--//
 
@@ -119,6 +121,16 @@ const defencekZoneName = document.createElement('p');
 defencekZoneName.textContent = "Defence zone";
 defenceArea.appendChild(defencekZoneName);
 
+function checkShots(){
+  if (attacksHero.length == 1 && defencesHero.length == 2){
+      fightbutton.disabled = false;
+      fightbutton.classList.remove('disabled')
+    } else {
+      fightbutton.disabled = true;
+      fightbutton.classList.add('disabled')
+    }
+}
+
 heroBody.map(el => {
   const checkboxContainer = document.createElement('div');
   checkboxContainer.classList.add('checkbox-container');
@@ -140,12 +152,10 @@ heroBody.map(el => {
       attacksHero = attacksHero.filter(el => el !== shot.value)
     )
     console.log('hero атакует', attacksHero);
-
-    if (attacksHero.length > 1){
-      fightbutton.disabled = true;
-    }
+    checkShots()
   })
 })
+
 
 //--enemy side--//
 enemyBody.map(el => {
@@ -168,11 +178,14 @@ enemyBody.map(el => {
     } else (
       defencesHero = defencesHero.filter(el => el !== shot.value)
     )
-    if (defencesHero.length > 2){
+    /*if (defencesHero.length != 2 ){
       fightbutton.disabled = true;
+      fightbutton.classList.add('disabled')
     } else {
       fightbutton.disabled = false;
-    }
+      fightbutton.classList.remove('disabled')
+    }*/
+    checkShots()
     console.log('hero защищает', defencesHero);
   })
   
@@ -181,6 +194,8 @@ enemyBody.map(el => {
 const fightbutton = document.createElement('button');
 fightbutton.classList.add('button');
 fightField.appendChild(fightbutton);
+fightbutton.classList.add('disabled');
+fightbutton.disabled = true;
 fightbutton.textContent = 'Attack!';
 
 const enemyContainer = document.createElement('div');
@@ -189,6 +204,7 @@ battle.appendChild(enemyContainer);
 
 let enemyName = document.createElement('p');
 enemyName.textContent = enemy.name;
+let enemyNameContent = enemyName.textContent;
 enemyContainer.appendChild(enemyName);
 
 const enemyImg = document.createElement('img');
@@ -209,6 +225,9 @@ const healthValueEnemy = document.createElement('p');
 healthValueEnemy.innerHTML = `${healthBarEnemy.value} / ${healthBarEnemy.max}`;
 healthContainerEnemy.appendChild(healthValueEnemy);
 
+const logArea = document.createElement('div');
+logArea.classList.add('log-area');
+battle.appendChild(logArea);
 //--fight-logic--//
 
 function randomAttack() {
@@ -237,11 +256,12 @@ function enemyDefence() {
 
 function compareHeroAttack() {
   let defHero = null;
+  let mes;
   let currentHealthEnemy =  healthBarEnemy.value;
   for (let i = 0; i < defencesEnemy.length; i++) {
     for (let j = 0; j < attacksHero.length; j++) {
       if (defencesEnemy[i] == attacksHero[j]) {
-        defHero = defencesEnemy[i]
+        defHero = defencesEnemy[i];
       }    
     }
   }
@@ -249,17 +269,23 @@ function compareHeroAttack() {
     currentHealthEnemy -= 10;
     healthBarEnemy.value -= 10;
     healthValueEnemy.innerHTML = `${currentHealthEnemy} / ${healthBarEnemy.max}`;
-    console.log('hero нанес урон 10HP')
+    console.log('hero нанес урон 10HP');
+    mes = `${heroNameContent} attack ${enemyNameContent} to ${attacksHero} and dealt 10 damage`;
+    
   }
   else {
      console.log('enemy защитил', defHero);
+     mes = `${heroNameContent} attack ${enemyNameContent} to ${defHero}, but ${enemyNameContent} defended`;
+
   }
   console.log('здоровье врага', currentHealthEnemy)
+  makefightLog(mes);
   return currentHealthEnemy
 }
 
 
 function compareEnemyAttack() {
+  let mes;
   let defEnemy = null;
   let currentHealthHero = healthBarHero.value
   for (let i = 0; i < defencesHero.length; i++){
@@ -269,15 +295,21 @@ function compareEnemyAttack() {
       }
    }
   }
+  
   if (defEnemy == null) {
     console.log('enemy нанес урон');
     currentHealthHero -= 10;
     healthBarHero.value -= 10;
     healthValue.innerHTML = `${currentHealthHero} / ${healthBarHero.max}`;
+    mes = `${enemyNameContent} attack ${heroNameContent} to ${attacksEnemy}, and dealt 10 damage`;
+
   } else {
     console.log('hero защитил', defEnemy)
+    mes = `${enemyNameContent} attack ${heroNameContent} to ${attacksEnemy}, but ${heroNameContent} defended`;
+
   }
   console.log('здоровье героя', currentHealthHero)
+  makefightLog(mes);
   return currentHealthHero
 };
 
@@ -291,6 +323,12 @@ function checkHealth(currentHealthEnemy, currentHealthHero) {
   }
 }
 
+function makefightLog(message){
+  let log = document.createElement('p');
+  log.textContent = message;
+  logArea.appendChild(log);
+  logArea.prepend(log);
+}
 
 fightbutton.addEventListener('click', () => {
   enemyAttack();
