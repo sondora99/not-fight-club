@@ -1,6 +1,7 @@
 import { hero, enemy } from './hero.js';
 import { heroBody, enemyBody } from './hero.js';
-
+//import { openModal } from './modal.js';
+const body = document.body;
 let heroInput = document.getElementById('character-name');
 const welcomeForm = document.querySelector('.welcome');
 const buttonInput = document.querySelector('.welcome-form-button');
@@ -14,6 +15,22 @@ let defencesHero = [];
 let attacksEnemy= [];
 let defencesEnemy = [];
 //-- welcome form --//
+
+function initGame(){
+  attacksHero = [];
+  defencesHero = [];
+  attacksEnemy= [];
+  defencesEnemy = [];
+  healthBarHero.value = 100;
+  healthBarEnemy.value = 100;
+  healthValueEnemy.innerHTML = `100 / ${healthBarEnemy.max}`;
+  healthValue.innerHTML = `100 / ${healthBarHero.max}`;
+  body.classList.remove('stop-scroll');
+  document.querySelectorAll('.attack-area input[type="checkbox"], .defence-area input[type="checkbox"]').forEach(checkbox => {
+    checkbox.checked = false;
+  });
+  enemyImg.classList.remove('image-loose');
+}
 
 function checkStorageName() {
   if (localStorage.getItem('hero.name')) {
@@ -45,14 +62,16 @@ function getName() {
   hero.name = heroInput.value;
   localStorage.setItem('hero.name', heroInput.value);
   console.log('hero.name:', hero.name);
-  return hero.name
+  heroName.textContent = localStorage.getItem('hero.name');
+  return hero.name;
+
 }
 
-function closeForm(section){
+export function closeForm(section){
   section.classList.add('hide')
 }
 
-function show(section){
+export function show(section){
   section.classList.remove('hide');
 }
 
@@ -62,6 +81,7 @@ buttonHome.addEventListener('click', () => {
   closeForm(home);
   gameName.classList.add('hide');
   show(battle);
+  initGame();
 })
 
 //--battle--//
@@ -74,7 +94,6 @@ battle.appendChild(heroContainer);
 let heroName = document.createElement('p');
 heroName.textContent = localStorage.getItem('hero.name');
 let heroNameContent = heroName.textContent;
-console.log(heroNameContent);
 heroContainer.appendChild(heroName);
 
 const heroImg = document.createElement('img');
@@ -178,18 +197,10 @@ enemyBody.map(el => {
     } else (
       defencesHero = defencesHero.filter(el => el !== shot.value)
     )
-    /*if (defencesHero.length != 2 ){
-      fightbutton.disabled = true;
-      fightbutton.classList.add('disabled')
-    } else {
-      fightbutton.disabled = false;
-      fightbutton.classList.remove('disabled')
-    }*/
     checkShots()
     console.log('hero защищает', defencesHero);
   })
-  
- })
+});
 
 const fightbutton = document.createElement('button');
 fightbutton.classList.add('button');
@@ -317,9 +328,11 @@ function checkHealth(currentHealthEnemy, currentHealthHero) {
   if (currentHealthEnemy <= 0 ) {
     console.log ('Hero wins!');
     enemyImg.classList.add('image-loose');
+    setTimeout(endGame('hero'), 10);
   }
   else if (currentHealthHero <= 0) {
-    console.log ('Enemy wins!')
+    console.log ('Enemy wins!');
+    endGame('enemy')
   }
 }
 
@@ -337,3 +350,51 @@ fightbutton.addEventListener('click', () => {
   let healthHero = compareEnemyAttack();
   checkHealth(healthEnemy, healthHero);
 })
+
+let overlay;
+function openModal(winner) {
+  overlay = document.createElement('div');
+  const endGameWindow = document.createElement('div');
+  overlay.classList.add('overlay');
+  body.appendChild(overlay);
+  overlay.appendChild(endGameWindow);
+  endGameWindow.classList.add('end-game');
+  let modalText = document.createElement('p');
+  endGameWindow.appendChild(modalText);
+  body.classList.add('stop-scroll');
+
+  if (winner == 'hero'){
+    modalText.textContent = 'Congratulations! You win!'
+  }
+  else (
+    modalText.textContent = 'You fought bravely but lost...'
+  )
+
+  let modalButton = document.createElement('button');
+  modalButton.classList.add('button');
+  modalButton.textContent = 'home';
+  endGameWindow.appendChild(modalButton);
+
+  modalButton.addEventListener('click', () => {
+    closeForm(endGameWindow);
+    overlay.classList.add('hide');
+    closeForm(battle);
+    show(home);
+    show(gameName);
+  })
+}
+
+function endGame(winner){
+  logArea.innerHTML = '';
+  console.log(logArea);
+  attacksHero = [];
+  defencesHero = [];
+  attacksEnemy= [];
+  defencesEnemy = [];
+  //healthBarHero.value = 100;
+  //healthBarEnemy.value = 100;
+  //healthValueEnemy.innerHTML = `100 / ${healthBarEnemy.max}`;
+  //healthValue.innerHTML = `100 / ${healthBarHero.max}`;
+  openModal(winner)
+}
+
