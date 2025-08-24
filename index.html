@@ -3,9 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>WH Fight Club</title>
 </head>
 <body>
   
+  <header class="header">
+    <ul class="header-menu">
+      <li><a href="#">Character</a></li>
+      <li><a href="#">Settings</a></li>
+      <li><a href="#">Home</a></li>
+    </ul>
+  </header>
+  <div class="container">
+  <main class="main">
+    <h1 class="game-name">Not a Fight-Club</h1>
+    <section class="welcome hide">
+      <form class="welcome-form" name="welcome-form" action="">
+        <fieldset>
+          <legend class="welcome-form-name">What's your name?</legend>
+          <input class="welcome-form-field" type="text" id="character-name" name="character-name" required>
+          <button class="welcome-form-button button" type="submit">Create Character</button>
+        </fieldset>
+      </form>
+    </section>
+    <section class="home hide">
+      <button class="home-button button" type="button">Fight!</button>
+    </section>
+
+    <section class="battle hide">
+    </section>
+
+  </main>
+  <a href="https://ru.freepik.com/free-ai-image/3d-fantasy-scene_157442923.htm#fromView=keyword&page=1&position=13&uuid=b9d0ac52-b2f3-4923-b143-6da0cef27cc5&query=%D0%9E%D0%B1%D0%BE%D0%B8+Warhammer+40k">Изображение от freepik</a>
+</div>
+<script src="script.js" type="module"></script>
+<script src="modal.js" type="module"></script>
 </body>
 </html>
