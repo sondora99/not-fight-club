@@ -14,6 +14,7 @@ let attacksHero = [];
 let defencesHero = [];
 let attacksEnemy= [];
 let defencesEnemy = [];
+let heroNameContent;
 //-- welcome form --//
 
 function initGame(){
@@ -63,8 +64,8 @@ function getName() {
   localStorage.setItem('hero.name', heroInput.value);
   console.log('hero.name:', hero.name);
   heroName.textContent = localStorage.getItem('hero.name');
+  heroNameContent = heroName.textContent;
   return hero.name;
-
 }
 
 export function closeForm(section){
@@ -93,7 +94,7 @@ battle.appendChild(heroContainer);
 
 let heroName = document.createElement('p');
 heroName.textContent = localStorage.getItem('hero.name');
-let heroNameContent = heroName.textContent;
+//let heroNameContent = heroName.textContent;
 heroContainer.appendChild(heroName);
 
 const heroImg = document.createElement('img');
