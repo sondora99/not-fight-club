@@ -31,6 +31,8 @@ function initGame(){
     checkbox.checked = false;
   });
   enemyImg.classList.remove('image-loose');
+  fightbutton.classList.add('disabled');
+  fightbutton.disabled = true;
 }
 
 function checkStorageName() {
