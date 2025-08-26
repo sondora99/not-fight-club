@@ -51,6 +51,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   gap: 40px;
+  margin-bottom: 20px;
 }
 
 h1 {
@@ -351,6 +352,13 @@ progress::-moz-progress-bar {
 
 .hide {
   display: none;
+}
+
+.freepik {
+  position: relative;
+  bottom: 0;
+  color: #231904;
+  font: 0.8em;
 }
 
 /*# sourceMappingURL=style.css.map */
