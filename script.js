@@ -33,6 +33,7 @@ function initGame(){
   enemyImg.classList.remove('image-loose');
   fightbutton.classList.add('disabled');
   fightbutton.disabled = true;
+  heroNameContent = localStorage.getItem('hero.name');
 }
 
 function checkStorageName() {
